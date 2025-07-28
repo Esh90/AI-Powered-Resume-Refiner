@@ -1,3 +1,4 @@
+import html2pdf from 'html2pdf.js';
 import { useState } from "react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
@@ -31,21 +32,30 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
   const [isDownloading, setIsDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleDownload = async () => {
-    setIsDownloading(true);
-    // Simulate PDF generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
+const handleDownload = async () => {
+  setIsDownloading(true);
+
+  const element = document.getElementById("pdf-content");
+
+  if (!element) {
     setIsDownloading(false);
-    
-    // In real app, this would trigger actual PDF download
-    const element = document.createElement('a');
-    const file = new Blob([result.tailoredResume], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = 'tailored-resume.txt';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    alert("PDF content not found.");
+    return;
+  }
+
+  const opt = {
+    margin: 0.5,
+    filename: "tailored-resume.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
   };
+
+  await html2pdf().set(opt).from(element).save();
+
+  setIsDownloading(false);
+};
+
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(result.tailoredResume);
@@ -165,12 +175,17 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
                   </TabsList>
                   
                   <TabsContent value="tailored" className="mt-6">
-                    <div className="bg-white/5 rounded-lg p-6 max-h-96 overflow-y-auto">
-                      <pre className="text-white/90 text-sm whitespace-pre-wrap font-mono leading-relaxed">
-                        {result.tailoredResume}
-                      </pre>
-                    </div>
-                  </TabsContent>
+  <div
+    id="pdf-content"
+    className="bg-white/5 rounded-lg p-6"
+    style={{ color: "#000", background: "#fff" }}
+  >
+    <pre className="text-black text-sm whitespace-pre-wrap font-mono leading-relaxed">
+      {result.tailoredResume}
+    </pre>
+  </div>
+</TabsContent>
+
                   
                   <TabsContent value="original" className="mt-6">
                     <div className="bg-white/5 rounded-lg p-6 max-h-96 overflow-y-auto">
