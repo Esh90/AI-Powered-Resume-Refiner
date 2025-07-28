@@ -13,88 +13,89 @@ import {
   Target,
   Download
 } from "lucide-react";
-import { useResumes } from "@/hooks/useResumes";
+
+interface TailorResult {
+  originalResume: string;
+  jobDescription: string;
+  tailoredResume: string;
+  matchScore: number;
+  suggestions: string[];
+}
 
 interface ResumeTailorProps {
   onBack: () => void;
-  onComplete: (result: any) => void;
+  onComplete: (result: TailorResult) => void;
 }
 
 export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
-  const { createResume } = useResumes();
   const [resume, setResume] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+   // Replace with actual
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate AI processing
-    await new Promise(resolve => setTimeout(resolve, 4000));
-    
-    const result = {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const res = await fetch("https://esha12345.app.n8n.cloud/webhook/resume-tailor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Send the correct JSON structure
+      body: JSON.stringify({
+        resume: resume,
+        jobDescription: jobDescription,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Bad response: ${res.status} ${res.statusText}`);
+    }
+
+    // Parse as JSON
+    let data;
+    try {
+      data = await res.json();
+    } catch (err) {
+      throw new Error(`Invalid JSON response`);
+    }
+
+    // Use the correct key from your n8n response
+    const tailoredText = data.key || "";
+    if (!tailoredText || tailoredText.trim() === "") {
+      throw new Error("Empty or invalid tailored resume from n8n");
+    }
+
+    const result: TailorResult = {
       originalResume: resume,
-      jobDescription: jobDescription,
-      tailoredResume: generateTailoredResume(resume, jobDescription),
-      matchScore: 94,
+      jobDescription,
+      tailoredResume: tailoredText,
+      matchScore: 92,
       suggestions: [
-        "Added relevant keywords from job description",
-        "Emphasized technical skills matching requirements",
-        "Restructured experience section for better alignment",
-        "Enhanced project descriptions with quantifiable results"
-      ]
+        "Matched experience with key job responsibilities",
+        "Optimized for ATS by injecting keywords",
+        "Aligned skills section with requirements",
+      ],
     };
-    
+
     onComplete(result);
-  };
+  } catch (err) {
+    console.error("Failed to get tailored resume", err);
+    onComplete({
+      originalResume: resume,
+      jobDescription,
+      tailoredResume: "❌ Something went wrong. Please try again later.",
+      matchScore: 0,
+      suggestions: [],
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
-  const generateTailoredResume = (originalResume: string, jobDesc: string) => {
-    // This would normally be AI-generated
-    return `ALEX JOHNSON
-Senior Software Engineer
-
-PROFESSIONAL SUMMARY
-Experienced Full-Stack Developer with 5+ years specializing in React, TypeScript, and cloud architecture. Proven track record of building scalable web applications and leading cross-functional teams to deliver high-impact solutions.
-
-TECHNICAL SKILLS
-• Frontend: React 18, TypeScript, Next.js, Tailwind CSS
-• Backend: Node.js, Python, PostgreSQL, MongoDB
-• Cloud: AWS, Docker, Kubernetes, Microservices
-• Tools: Git, Jest, CI/CD, Agile methodologies
-
-PROFESSIONAL EXPERIENCE
-
-Senior Software Engineer | TechCorp Inc. | 2021 - Present
-• Led development of customer-facing React application serving 100K+ users
-• Implemented TypeScript migration resulting in 40% reduction in runtime errors
-• Architected microservices infrastructure improving system scalability by 300%
-• Mentored 3 junior developers and established code review best practices
-
-Software Engineer | StartupXYZ | 2019 - 2021
-• Built responsive web applications using React and modern JavaScript
-• Optimized database queries reducing page load times by 60%
-• Collaborated with UX team to implement intuitive user interfaces
-• Deployed applications using Docker and AWS infrastructure
-
-PROJECTS
-E-Commerce Platform (2023)
-• Developed full-stack React/Node.js application with payment integration
-• Implemented real-time inventory management using WebSocket connections
-• Achieved 99.9% uptime through comprehensive testing and monitoring
-
-AI Dashboard (2022)
-• Created data visualization dashboard using React and D3.js
-• Integrated machine learning APIs for predictive analytics
-• Delivered project 2 weeks ahead of schedule with zero bugs
-
-EDUCATION
-Bachelor of Computer Science | University of Technology | 2019
-
-CERTIFICATIONS
-• AWS Solutions Architect Associate (2023)
-• React Advanced Patterns Certification (2022)`;
-  };
 
   const LoadingAnimation = () => (
     <div className="text-center py-12">
