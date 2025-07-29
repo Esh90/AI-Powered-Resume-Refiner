@@ -43,7 +43,7 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
   setIsLoading(true);
 
   try {
-    const res = await fetch("https://esha12345.app.n8n.cloud/webhook/resume-tailor", {
+    const res = await fetch(import.meta.env.VITE_N8N_WEBHOOK_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
