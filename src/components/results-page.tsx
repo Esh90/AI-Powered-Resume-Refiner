@@ -102,7 +102,7 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
       <div className="absolute inset-0 bg-black/10"></div>
       
       <div className="relative z-10 p-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full">
           {/* Header */}
           <div className="flex items-center justify-between mb-8 animate-fade-in">
             <div className="flex items-center">
@@ -115,54 +115,54 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
                 Back
               </Button>
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2 flex items-center">
-                  <Sparkles className="w-8 h-8 mr-3 text-primary" />
+                <h1 className="text-5xl font-bold text-white mb-3 flex items-center">
+                  <Sparkles className="w-10 h-10 mr-4 text-primary" />
                   Resume Tailored Successfully!
                 </h1>
-                <p className="text-white/70">Your resume has been optimized for this job posting</p>
+                <p className="text-white/70 text-2xl">Your resume has been optimized for this job posting</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">{result.matchScore}%</div>
-                <div className="text-white/70 text-sm">Match Score</div>
-              </div>
+            <div className="text-center">
+              <div className="text-5xl font-extrabold text-white">{result.matchScore}%</div>
+              <div className="text-white/70 text-xl">Match Score</div>
+            </div>
             </div>
           </div>
 
           {/* Success Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <GlassCard hover className="text-center animate-scale-in">
-              <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-6 h-6 text-green-400" />
+              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-green-400" />
               </div>
-              <div className="text-2xl font-bold text-white">{result.matchScore}%</div>
-              <div className="text-white/70 text-sm">Job Match</div>
+              <div className="text-4xl font-extrabold text-white">{result.matchScore}%</div>
+              <div className="text-white/70 text-xl">Job Match</div>
             </GlassCard>
             
             <GlassCard hover className="text-center animate-scale-in" style={{ animationDelay: '0.1s' }}>
-              <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <TrendingUp className="w-6 h-6 text-blue-400" />
+              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-blue-400" />
               </div>
-              <div className="text-2xl font-bold text-white">+47%</div>
-              <div className="text-white/70 text-sm">ATS Score</div>
+              <div className="text-4xl font-extrabold text-white">+47%</div>
+              <div className="text-white/70 text-xl">ATS Score</div>
             </GlassCard>
             
             <GlassCard hover className="text-center animate-scale-in" style={{ animationDelay: '0.2s' }}>
-              <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Zap className="w-6 h-6 text-purple-400" />
+              <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-8 h-8 text-purple-400" />
               </div>
-              <div className="text-2xl font-bold text-white">23</div>
-              <div className="text-white/70 text-sm">Keywords Added</div>
+              <div className="text-4xl font-extrabold text-white">23</div>
+              <div className="text-white/70 text-xl">Keywords Added</div>
             </GlassCard>
             
             <GlassCard hover className="text-center animate-scale-in" style={{ animationDelay: '0.3s' }}>
-              <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <FileText className="w-6 h-6 text-orange-400" />
+              <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-orange-400" />
               </div>
-              <div className="text-2xl font-bold text-white">4</div>
-              <div className="text-white/70 text-sm">Sections Enhanced</div>
+              <div className="text-4xl font-extrabold text-white">4</div>
+              <div className="text-white/70 text-xl">Sections Enhanced</div>
             </GlassCard>
           </div>
 
@@ -172,28 +172,28 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
             <div className="lg:col-span-2">
               <GlassCard className="animate-slide-up">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-white flex items-center">
-                    <FileText className="w-6 h-6 mr-2 text-primary" />
+                  <h2 className="text-4xl font-extrabold text-white flex items-center">
+                    <FileText className="w-8 h-8 mr-3 text-primary" />
                     Your Tailored Resume
                   </h2>
                   
                   <div className="flex space-x-2">
                     <Button
                       variant="outline"
-                      size="sm"
+                      size="lg"
                       onClick={handleCopy}
-                      className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                      className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xl px-6 py-3"
                     >
-                      <Copy className="w-4 h-4 mr-2" />
+                      <Copy className="w-6 h-6 mr-3" />
                       {copied ? 'Copied!' : 'Copy'}
                     </Button>
                     <Button
                       variant="outline"
-                      size="sm"
-                      className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                      size="lg"
+                      className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xl px-6 py-3"
                       onClick={handleShare}
                     >
-                      <Share2 className="w-4 h-4 mr-2" />
+                      <Share2 className="w-6 h-6 mr-3" />
                       Share
                     </Button>
                   </div>
@@ -215,7 +215,7 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
     className="bg-white/5 rounded-lg p-6"
     style={{ color: "#000", background: "#fff" }}
   >
-    <pre className="text-black text-sm whitespace-pre-wrap font-mono leading-relaxed">
+    <pre className="text-black text-xl whitespace-pre-wrap font-mono leading-relaxed">
       {result.tailoredResume}
     </pre>
   </div>
@@ -224,27 +224,27 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
                   
                   <TabsContent value="original" className="mt-6">
                     <div className="bg-white/5 rounded-lg p-6 max-h-96 overflow-y-auto">
-                      <pre className="text-white/70 text-sm whitespace-pre-wrap font-mono leading-relaxed">
+                      <pre className="text-white/70 text-xl whitespace-pre-wrap font-mono leading-relaxed">
                         {result.originalResume}
                       </pre>
                     </div>
                   </TabsContent>
                 </Tabs>
 
-                <div className="flex justify-center mt-8 space-x-4">
+                <div className="flex justify-center mt-8 space-x-6">
                   <Button
                     onClick={handleDownload}
                     disabled={isDownloading}
-                    className="bg-gradient-primary hover:opacity-90 text-white font-semibold px-8 py-3 shadow-glow"
+                    className="bg-gradient-primary hover:opacity-90 text-white font-bold px-16 py-6 text-2xl shadow-glow"
                   >
                     {isDownloading ? (
                       <div className="flex items-center">
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                        <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
                         Generating PDF...
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        <Download className="w-5 h-5 mr-2" />
+                        <Download className="w-8 h-8 mr-3" />
                         Download as PDF
                       </div>
                     )}
@@ -253,9 +253,9 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
                   <Button
                     variant="outline"
                     onClick={onNewTailor}
-                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-3"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-16 py-6 text-2xl"
                   >
-                    <Sparkles className="w-5 h-5 mr-2" />
+                    <Sparkles className="w-8 h-8 mr-3" />
                     Tailor Another
                   </Button>
                 </div>
@@ -265,68 +265,64 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
             {/* Suggestions Sidebar */}
             <div className="space-y-6">
               <GlassCard className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-                  <Sparkles className="w-5 h-5 mr-2 text-accent" />
+                <h3 className="text-3xl font-extrabold text-white mb-8 flex items-center">
+                  <Sparkles className="w-8 h-8 mr-3 text-accent" />
                   AI Improvements
                 </h3>
-                
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {result.suggestions.map((suggestion, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mt-0.5">
-                        <CheckCircle className="w-4 h-4 text-green-400" />
+                    <div key={index} className="flex items-start space-x-4">
+                      <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mt-1">
+                        <CheckCircle className="w-6 h-6 text-green-400" />
                       </div>
-                      <p className="text-white/90 text-sm leading-relaxed">{suggestion}</p>
+                      <p className="text-white/90 text-xl leading-relaxed">{suggestion}</p>
                     </div>
                   ))}
                 </div>
               </GlassCard>
 
               <GlassCard className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
-                <h3 className="text-lg font-bold text-white mb-4">Match Analysis</h3>
-                
-                <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-white mb-6">Match Analysis</h3>
+                <div className="space-y-6">
                   <div>
-                    <div className="flex justify-between text-sm mb-2">
+                    <div className="flex justify-between text-xl mb-3">
                       <span className="text-white/70">Technical Skills</span>
-                      <span className="text-white font-medium">98%</span>
+                      <span className="text-white font-bold">98%</span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div className="bg-gradient-primary h-2 rounded-full" style={{ width: '98%' }}></div>
+                    <div className="w-full bg-white/10 rounded-full h-3">
+                      <div className="bg-gradient-primary h-3 rounded-full" style={{ width: '98%' }}></div>
                     </div>
                   </div>
-                  
                   <div>
-                    <div className="flex justify-between text-sm mb-2">
+                    <div className="flex justify-between text-xl mb-3">
                       <span className="text-white/70">Experience Match</span>
-                      <span className="text-white font-medium">92%</span>
+                      <span className="text-white font-bold">92%</span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div className="bg-gradient-secondary h-2 rounded-full" style={{ width: '92%' }}></div>
+                    <div className="w-full bg-white/10 rounded-full h-3">
+                      <div className="bg-gradient-secondary h-3 rounded-full" style={{ width: '92%' }}></div>
                     </div>
                   </div>
-                  
                   <div>
-                    <div className="flex justify-between text-sm mb-2">
+                    <div className="flex justify-between text-xl mb-3">
                       <span className="text-white/70">Keywords</span>
-                      <span className="text-white font-medium">89%</span>
+                      <span className="text-white font-bold">89%</span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div className="bg-gradient-hero h-2 rounded-full" style={{ width: '89%' }}></div>
+                    <div className="w-full bg-white/10 rounded-full h-3">
+                      <div className="bg-gradient-hero h-3 rounded-full" style={{ width: '89%' }}></div>
                     </div>
                   </div>
                 </div>
               </GlassCard>
 
               <GlassCard className="text-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
-                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-white" />
+                <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                  <TrendingUp className="w-12 h-12 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Ready to Apply!</h3>
-                <p className="text-white/70 text-sm mb-4">
+                <h3 className="text-3xl font-bold text-white mb-4">Ready to Apply!</h3>
+                <p className="text-white/70 text-xl mb-6">
                   Your resume is now optimized and ready for submission. Good luck!
                 </p>
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xl px-6 py-2">
                   High Match Score
                 </Badge>
               </GlassCard>

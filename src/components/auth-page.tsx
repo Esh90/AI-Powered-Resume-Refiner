@@ -25,7 +25,7 @@ export const AuthPage = ({ onAuth }: { onAuth: () => void }) => {
     <div className="min-h-screen bg-gradient-hero animate-gradient flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/20"></div>
       
-      <div className="relative z-10 w-full max-w-md animate-fade-in">
+      <div className="relative z-10 w-full max-w-xl animate-fade-in">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-primary rounded-full mb-4 animate-pulse-glow">
             <Sparkles className="w-8 h-8 text-white" />

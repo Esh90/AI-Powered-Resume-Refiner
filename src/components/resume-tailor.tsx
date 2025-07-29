@@ -204,7 +204,7 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
       <div className="absolute inset-0 bg-black/10"></div>
       
       <div className="relative z-10 p-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full">
           {/* Header */}
           <div className="flex items-center justify-between mb-8 animate-fade-in">
             <div className="flex items-center">
@@ -217,8 +217,8 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                 Back
               </Button>
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Resume Tailor</h1>
-                <p className="text-white/70">Transform your resume to match any job perfectly</p>
+                <h1 className="text-5xl font-bold text-white mb-3">Resume Tailor</h1>
+                <p className="text-white/70 text-2xl">Transform your resume to match any job perfectly</p>
               </div>
             </div>
             
@@ -238,10 +238,10 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                       <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <Label className="text-lg font-semibold text-white">
+                      <Label className="text-2xl font-bold text-white">
                         Your Current Resume
                       </Label>
-                      <p className="text-white/70 text-sm">
+                      <p className="text-white/70 text-lg">
                         Paste your existing resume content here
                       </p>
                     </div>
@@ -256,9 +256,9 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                   />
                   
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-white/50">
-                      {resume.length} characters
-                    </span>
+                  <span className="text-white/50 text-lg">
+                    {resume.length} characters
+                  </span>
                     <Button
                       type="button"
                       variant="outline"
@@ -266,7 +266,7 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                       className="bg-white/5 border-white/20 text-white hover:bg-white/10"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <Upload className="w-4 h-4 mr-2" />
+                      <Upload className="w-8 h-8 mr-2" />
                       Upload File
                     </Button>
                     <input
@@ -286,10 +286,10 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                       <Briefcase className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <Label className="text-lg font-semibold text-white">
+                      <Label className="text-2xl font-bold text-white">
                         Job Description
                       </Label>
-                      <p className="text-white/70 text-sm">
+                      <p className="text-white/70 text-lg">
                         Paste the job posting you're applying for
                       </p>
                     </div>
@@ -303,7 +303,7 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                     required
                   />
                   
-                  <span className="text-white/50 text-sm">
+                  <span className="text-white/50 text-lg">
                     {jobDescription.length} characters
                   </span>
                 </div>
@@ -313,11 +313,11 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                   <Button
                     type="submit"
                     disabled={!resume.trim() || !jobDescription.trim()}
-                    className="bg-gradient-primary hover:opacity-90 text-white font-semibold px-12 py-4 text-lg group shadow-glow"
+                    className="bg-gradient-primary hover:opacity-90 text-white font-bold px-16 py-6 text-3xl group shadow-glow"
                   >
-                    <Zap className="w-6 h-6 mr-3" />
+                    <Zap className="w-8 h-8 mr-4" />
                     Tailor My Resume
-                    <Sparkles className="w-6 h-6 ml-3 group-hover:rotate-12 transition-transform" />
+                    <Sparkles className="w-8 h-8 ml-4 group-hover:rotate-12 transition-transform" />
                   </Button>
                 </div>
               </form>
@@ -332,27 +332,27 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
           {!isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <GlassCard hover className="text-center">
-                <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-6 h-6 text-white" />
+                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Target className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Smart Matching</h3>
-                <p className="text-white/70 text-sm">AI analyzes job requirements and optimizes your resume accordingly</p>
+                <h3 className="text-2xl font-bold text-white mb-3">Smart Matching</h3>
+                <p className="text-white/70 text-xl">AI analyzes job requirements and optimizes your resume accordingly</p>
               </GlassCard>
               
               <GlassCard hover className="text-center">
-                <div className="w-12 h-12 bg-gradient-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Sparkles className="w-6 h-6 text-white" />
+                <div className="w-16 h-16 bg-gradient-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Sparkles className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Keyword Optimization</h3>
-                <p className="text-white/70 text-sm">Automatically includes relevant keywords to pass ATS systems</p>
+                <h3 className="text-2xl font-bold text-white mb-3">Keyword Optimization</h3>
+                <p className="text-white/70 text-xl">Automatically includes relevant keywords to pass ATS systems</p>
               </GlassCard>
               
               <GlassCard hover className="text-center">
-                <div className="w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Download className="w-6 h-6 text-white" />
+                <div className="w-16 h-16 bg-gradient-hero rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Download className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Ready to Download</h3>
-                <p className="text-white/70 text-sm">Get your tailored resume as a professional PDF instantly</p>
+                <h3 className="text-2xl font-bold text-white mb-3">Ready to Download</h3>
+                <p className="text-white/70 text-xl">Get your tailored resume as a professional PDF instantly</p>
               </GlassCard>
             </div>
           )}

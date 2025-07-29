@@ -89,7 +89,7 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
       <div className="absolute inset-0 bg-black/10"></div>
       
       <div className="relative z-10 p-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full">
           {/* Header */}
           <div className="flex items-center justify-between mb-8 animate-fade-in">
             <div className="flex items-center">
@@ -98,8 +98,8 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
                 onClick={onBack}
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20 mr-6"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
+                <ArrowLeft className="w-7 h-7 mr-2" />
+                <h1>Back</h1>
               </Button>
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">Resume History</h1>
@@ -116,7 +116,7 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
           <GlassCard className="mb-8 animate-slide-up">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-7 text-white/50" />
                 <Input
                   placeholder="Search resumes by title or company..."
                   value={searchTerm}
@@ -168,7 +168,7 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
               <GlassCard 
                 key={resume.id || index} 
                 hover 
-                className="animate-slide-up"
+                className="animate-slide-up transition-transform duration-300 hover:scale-95"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-center justify-between">
@@ -252,7 +252,7 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
           {/* Modal for viewing resume */}
           {viewedResume && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-              <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-8 relative">
+                <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full p-10 relative flex flex-col" style={{ minHeight: "600px", height: "80vh" }}>
                 <button
                   className="absolute top-4 right-4 text-gray-500 hover:text-primary text-xl"
                   onClick={() => setViewedResume(null)}
@@ -266,18 +266,18 @@ export const HistoryPage = ({ onBack }: HistoryPageProps) => {
                 </h2>
                 <div className="mb-2 text-sm text-gray-600">
                   <span className="mr-4">
-                    <Calendar className="inline w-4 h-4 mr-1" />
-                    {formatDate(viewedResume.createdAt)}
+                  <Calendar className="inline w-4 h-4 mr-1" />
+                  {formatDate(viewedResume.createdAt)}
                   </span>
                   <span>
-                    <TrendingUp className="inline w-4 h-4 mr-1" />
-                    {viewedResume.matchScore}% match
+                  <TrendingUp className="inline w-4 h-4 mr-1" />
+                  {viewedResume.matchScore}% match
                   </span>
                 </div>
-                <pre className="bg-gray-100 rounded p-4 text-sm text-black whitespace-pre-wrap font-mono max-h-96 overflow-y-auto">
+                <pre className="bg-gray-100 rounded p-4 text-sm text-black whitespace-pre-wrap font-mono flex-1 overflow-y-auto">
                   {viewedResume.tailoredResume}
                 </pre>
-              </div>
+                </div>
             </div>
           )}
 
