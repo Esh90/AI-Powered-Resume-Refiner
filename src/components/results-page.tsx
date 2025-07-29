@@ -63,6 +63,22 @@ const handleDownload = async () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Tailored Resume",
+          text: result.tailoredResume,
+        });
+      } catch (err) {
+        alert("Sharing was cancelled or failed.");
+      }
+    } else {
+      await navigator.clipboard.writeText(result.tailoredResume);
+      alert("Sharing is not supported on this device. Resume copied to clipboard!");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-hero animate-gradient">
       <div className="absolute inset-0 bg-black/10"></div>
@@ -157,6 +173,7 @@ const handleDownload = async () => {
                       variant="outline"
                       size="sm"
                       className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                      onClick={handleShare}
                     >
                       <Share2 className="w-4 h-4 mr-2" />
                       Share
