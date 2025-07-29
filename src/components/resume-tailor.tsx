@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -13,6 +13,9 @@ import {
   Target,
   Download
 } from "lucide-react";
+import mammoth from "mammoth";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import "pdfjs-dist/build/pdf.worker.entry";
 
 interface TailorResult {
   originalResume: string;
@@ -31,8 +34,9 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
   const [resume, setResume] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-   // Replace with actual
+  // Replace with actual
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -138,6 +142,63 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
     </div>
   );
 
+  // File upload handler
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type === "text/plain") {
+      // TXT file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (typeof e.target?.result === "string") {
+          setResume(e.target.result);
+        }
+      };
+      reader.readAsText(file);
+    } else if (
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf")
+    ) {
+      // PDF file
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const typedarray = new Uint8Array(e.target?.result as ArrayBuffer);
+          const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+          let text = "";
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map((item: { str: string }) => item.str).join(" ") + "\n";
+          }
+          setResume(text);
+        } catch (err) {
+          alert("Could not read PDF file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else if (
+      file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      file.name.toLowerCase().endsWith(".docx")
+    ) {
+      // DOCX file
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const arrayBuffer = e.target?.result as ArrayBuffer;
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          setResume(result.value);
+        } catch (err) {
+          alert("Could not read DOCX file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      alert("Unsupported file type. Please upload a PDF, TXT, or DOCX file.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-hero animate-gradient">
       <div className="absolute inset-0 bg-black/10"></div>
@@ -203,10 +264,18 @@ export const ResumeTailor = ({ onBack, onComplete }: ResumeTailorProps) => {
                       variant="outline"
                       size="sm"
                       className="bg-white/5 border-white/20 text-white hover:bg-white/10"
+                      onClick={() => fileInputRef.current?.click()}
                     >
                       <Upload className="w-4 h-4 mr-2" />
                       Upload File
                     </Button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.txt,.docx"
+                      style={{ display: "none" }}
+                      onChange={handleFileUpload}
+                    />
                   </div>
                 </div>
 
