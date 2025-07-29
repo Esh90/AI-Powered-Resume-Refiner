@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
@@ -11,79 +12,31 @@ import {
   Trash2,
   Calendar,
   TrendingUp,
-  Filter,
-  MoreVertical,
   Star,
   Eye
 } from "lucide-react";
 
 interface HistoryPageProps {
   onBack: () => void;
-  onViewResume: (resume: any) => void;
+  onViewResume: (resume: unknown) => void;
 }
 
-export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
+export const HistoryPage = ({ onBack }: HistoryPageProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterBy, setFilterBy] = useState("all");
-
-  // Mock data - in real app this would come from API
-  const resumeHistory = [
-    {
-      id: 1,
-      title: "Senior Software Engineer - Google",
-      company: "Google",
-      matchScore: 94,
-      createdAt: "2024-01-15",
-      status: "downloaded",
-      tags: ["React", "TypeScript", "Cloud"],
-      isFavorite: true
-    },
-    {
-      id: 2,
-      title: "Product Manager - Meta",
-      company: "Meta",
-      matchScore: 87,
-      createdAt: "2024-01-12",
-      status: "created",
-      tags: ["Product", "Strategy", "Analytics"],
-      isFavorite: false
-    },
-    {
-      id: 3,
-      title: "UX Designer - Apple",
-      company: "Apple",
-      matchScore: 91,
-      createdAt: "2024-01-10",
-      status: "downloaded",
-      tags: ["Design", "Figma", "Research"],
-      isFavorite: true
-    },
-    {
-      id: 4,
-      title: "DevOps Engineer - Amazon",
-      company: "Amazon",
-      matchScore: 89,
-      createdAt: "2024-01-08",
-      status: "created",
-      tags: ["AWS", "Docker", "Kubernetes"],
-      isFavorite: false
-    },
-    {
-      id: 5,
-      title: "Full Stack Developer - Netflix",
-      company: "Netflix",
-      matchScore: 92,
-      createdAt: "2024-01-05",
-      status: "downloaded",
-      tags: ["React", "Node.js", "MongoDB"],
-      isFavorite: false
+  const [resumeHistory, setResumeHistory] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("tailoredResumes") || "[]");
+    } catch {
+      return [];
     }
-  ];
+  });
+  const [viewedResume, setViewedResume] = useState<any | null>(null);
 
-  const filteredResumes = resumeHistory.filter(resume => {
-    const matchesSearch = resume.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resume.company.toLowerCase().includes(searchTerm.toLowerCase());
-    
+  // Filter resumes
+  const filteredResumes = resumeHistory.filter((resume: any) => {
+    const matchesSearch = resume.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         resume.company?.toLowerCase().includes(searchTerm.toLowerCase());
     if (filterBy === "favorites") return matchesSearch && resume.isFavorite;
     if (filterBy === "downloaded") return matchesSearch && resume.status === "downloaded";
     return matchesSearch;
@@ -102,6 +55,33 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
       day: 'numeric',
       year: 'numeric'
     });
+  };
+
+  // Download functionality
+  const handleDownload = (resume: any) => {
+    const blob = new Blob([resume.tailoredResume], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${resume.title || "resume"}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Mark as downloaded
+    const updatedHistory = resumeHistory.map((r: any) =>
+      r.id === resume.id ? { ...r, status: "downloaded" } : r
+    );
+    setResumeHistory(updatedHistory);
+    localStorage.setItem("tailoredResumes", JSON.stringify(updatedHistory));
+  };
+
+  // Delete functionality
+  const handleDelete = (resumeId: number) => {
+    const updatedHistory = resumeHistory.filter((r: any) => r.id !== resumeId);
+    setResumeHistory(updatedHistory);
+    localStorage.setItem("tailoredResumes", JSON.stringify(updatedHistory));
   };
 
   return (
@@ -184,9 +164,9 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
 
           {/* Resume Cards */}
           <div className="space-y-4">
-            {filteredResumes.map((resume, index) => (
+            {filteredResumes.map((resume: any, index: number) => (
               <GlassCard 
-                key={resume.id} 
+                key={resume.id || index} 
                 hover 
                 className="animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -221,7 +201,7 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
                       </div>
                       
                       <div className="flex flex-wrap gap-2 mt-3">
-                        {resume.tags.map((tag, tagIndex) => (
+                        {resume.tags?.map((tag: string, tagIndex: number) => (
                           <Badge 
                             key={tagIndex}
                             variant="outline"
@@ -238,7 +218,7 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onViewResume(resume)}
+                      onClick={() => setViewedResume(resume)}
                       className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                     >
                       <Eye className="w-4 h-4 mr-2" />
@@ -248,6 +228,7 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => handleDownload(resume)}
                       className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                     >
                       <Download className="w-4 h-4 mr-2" />
@@ -257,6 +238,7 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => handleDelete(resume.id)}
                       className="bg-white/10 border-white/20 text-white hover:bg-red-500/20 hover:border-red-500/30"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -266,6 +248,38 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
               </GlassCard>
             ))}
           </div>
+
+          {/* Modal for viewing resume */}
+          {viewedResume && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+              <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-8 relative">
+                <button
+                  className="absolute top-4 right-4 text-gray-500 hover:text-primary text-xl"
+                  onClick={() => setViewedResume(null)}
+                  aria-label="Close"
+                >
+                  &times;
+                </button>
+                <h2 className="text-2xl font-bold mb-4 text-primary flex items-center">
+                  <FileText className="w-6 h-6 mr-2" />
+                  {viewedResume.title || "Resume"}
+                </h2>
+                <div className="mb-2 text-sm text-gray-600">
+                  <span className="mr-4">
+                    <Calendar className="inline w-4 h-4 mr-1" />
+                    {formatDate(viewedResume.createdAt)}
+                  </span>
+                  <span>
+                    <TrendingUp className="inline w-4 h-4 mr-1" />
+                    {viewedResume.matchScore}% match
+                  </span>
+                </div>
+                <pre className="bg-gray-100 rounded p-4 text-sm text-black whitespace-pre-wrap font-mono max-h-96 overflow-y-auto">
+                  {viewedResume.tailoredResume}
+                </pre>
+              </div>
+            </div>
+          )}
 
           {/* Empty State */}
           {filteredResumes.length === 0 && (
@@ -299,14 +313,17 @@ export const HistoryPage = ({ onBack, onViewResume }: HistoryPageProps) => {
               
               <GlassCard className="text-center animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 <div className="text-3xl font-bold text-white">
-                  {Math.round(resumeHistory.reduce((acc, r) => acc + r.matchScore, 0) / resumeHistory.length)}%
+                  {resumeHistory.length > 0
+                    ? Math.round(resumeHistory.reduce((acc: number, r: any) => acc + r.matchScore, 0) / resumeHistory.length)
+                    : 0
+                  }%
                 </div>
                 <div className="text-white/70 text-sm">Avg Match Score</div>
               </GlassCard>
               
               <GlassCard className="text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 <div className="text-3xl font-bold text-white">
-                  {resumeHistory.filter(r => r.status === "downloaded").length}
+                  {resumeHistory.filter((r: any) => r.status === "downloaded").length}
                 </div>
                 <div className="text-white/70 text-sm">Downloads</div>
               </GlassCard>

@@ -1,5 +1,5 @@
 import html2pdf from 'html2pdf.js';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -32,29 +32,47 @@ export const ResultsPage = ({ result, onBack, onNewTailor }: ResultsPageProps) =
   const [isDownloading, setIsDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-const handleDownload = async () => {
-  setIsDownloading(true);
+  useEffect(() => {
+    if (result) {
+      const history = JSON.parse(localStorage.getItem("tailoredResumes") || "[]");
+      history.push({
+        ...result,
+        id: Date.now(), // unique id
+        title: "Tailored Resume",
+        company: "Custom",
+        createdAt: new Date().toISOString(),
+        status: "created",
+        tags: [], // or extract from resume
+        isFavorite: false,
+        matchScore: result.matchScore,
+      });
+      localStorage.setItem("tailoredResumes", JSON.stringify(history));
+    }
+  }, [result]);
 
-  const element = document.getElementById("pdf-content");
+  const handleDownload = async () => {
+    setIsDownloading(true);
 
-  if (!element) {
+    const element = document.getElementById("pdf-content");
+
+    if (!element) {
+      setIsDownloading(false);
+      alert("PDF content not found.");
+      return;
+    }
+
+    const opt = {
+      margin: 0.5,
+      filename: "tailored-resume.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    await html2pdf().set(opt).from(element).save();
+
     setIsDownloading(false);
-    alert("PDF content not found.");
-    return;
-  }
-
-  const opt = {
-    margin: 0.5,
-    filename: "tailored-resume.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
   };
-
-  await html2pdf().set(opt).from(element).save();
-
-  setIsDownloading(false);
-};
 
 
   const handleCopy = async () => {
