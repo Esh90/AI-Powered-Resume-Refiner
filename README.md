@@ -1,73 +1,101 @@
-# Welcome to your Lovable project
+npm i
+npm run dev
 
-## Project info
+# Resume-Refiner
 
-**URL**: https://lovable.dev/projects/10112dd4-cd7e-43a8-85ff-7dbf2852db02
+Resume-Refiner is an AI-powered resume tailoring platform that helps users optimize their resumes for specific job descriptions. Built with modern web technologies and seamless integrations, it delivers a professional, responsive, and user-friendly experience.
 
-## How can I edit this code?
+## 🚀 Features
 
-There are several ways of editing your application.
+- **AI Resume Tailoring:** Instantly refine your resume for any job using Cohere AI via n8n workflows.
+- **Magic Link Authentication:** Secure, passwordless login powered by Supabase. Users receive a magic link via email to access their dashboard.
+- **Resume History:** View, download, delete, and manage all previously tailored resumes.
+- **File Upload:** Upload your resume in PDF, Word (.docx), or TXT format for instant processing.
+- **Download & Share:** Download tailored resumes as PDF, copy to clipboard, or share via Web Share API (WhatsApp, email, etc.).
+- **Responsive Design:** Fully responsive UI/UX for all device sizes, built with shadcn-ui and Tailwind CSS.
+- **Professional Dashboard:** Track resume stats, view recent activity, and access AI insights.
+- **Postman Tested:** All APIs and backend functionality are thoroughly tested using Postman.
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/10112dd4-cd7e-43a8-85ff-7dbf2852db02) and start prompting.
+**Frontend:**
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- shadcn-ui
+- Web Share API
+- html2pdf.js (PDF export)
+- Mammoth.js, pdfjs-dist (resume file parsing)
 
-Changes made via Lovable will be committed automatically to this repo.
+**Backend & Integrations:**
+- n8n (workflow automation, webhook handling)
+- Cohere AI (LLM for resume refinement, via trial API keys)
+- Supabase (authentication, magic link, database)
 
-**Use your preferred IDE**
+**Other Tools:**
+- Postman (API and workflow testing)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📝 How It Works
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Authentication:**
+   - User enters their email and receives a magic link via Supabase.
+   - Clicking the link grants access to the dashboard.
 
-Follow these steps:
+2. **Resume Tailoring:**
+   - User provides their current resume and the job description.
+   - Optionally, upload a resume file (PDF, Word, TXT).
+   - Data is sent to n8n via webhook, which:
+     - Formats the input in a code node.
+     - Sends it to Cohere AI via HTTP request node with a refined prompt.
+     - Receives the tailored resume from Cohere, formats it, and returns it as JSON.
+   - The tailored resume is displayed in the frontend.
+
+3. **Resume Management:**
+   - User can download the tailored resume as PDF, copy it, or share via Web Share API.
+   - All tailored resumes are saved in history, where users can view, delete, or download them.
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js & npm (recommended: use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- Supabase project & API keys
+- n8n instance with Cohere API integration
+
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+cd resume-refiner
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Environment Variables
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Create a `.env.local` file and add your API endpoints and keys as needed.
 
-**Use GitHub Codespaces**
+### Testing
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- Use Postman to test n8n webhooks and Cohere API integration.
 
-## What technologies are used for this project?
+## 🌐 Deployment
 
-This project is built with:
+- Deploy on [Vercel](https://vercel.com/) or your preferred platform.
+- Connect a custom domain via Lovable or Vercel settings.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📄 License
 
-## How can I deploy this project?
+MIT
 
-Simply open [Lovable](https://lovable.dev/projects/10112dd4-cd7e-43a8-85ff-7dbf2852db02) and click on Share -> Publish.
+## 💡 Future Improvements
 
-## Can I connect a custom domain to my Lovable project?
+- Real-time ATS and keyword match analytics
+- Enhanced dashboard statistics
+- Advanced resume insights
+- One-click deployment and domain management
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+**Built with ❤️ by Esh90.**
